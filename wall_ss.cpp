@@ -162,7 +162,7 @@ int main() {
     double Cp_node, k_node, rho_node;
 
     // Source term
-    std::vector<double> Q(N, 1e8);
+    std::vector<double> Q(N, 1e4);
 
     std::ofstream fout("solution_wall_stationary.txt");
     fout << std::setprecision(8);
