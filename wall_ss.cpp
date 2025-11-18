@@ -159,7 +159,7 @@ int main() {
     cWT[N - 1] = 0.0;
     dWT[N - 1] = 0.0;
 
-    double Cp_node, k_node, rho_node;
+    double cp, k, rho;
 
     // Source term
     std::vector<double> Q(N, 1e4);
@@ -170,18 +170,18 @@ int main() {
     #pragma omp parallel for
     for (int i = 1; i < N - 1; i++) {
 
-        Cp_node = steel::cp(T[i]);
-        rho_node = steel::rho(T[i]);
-        k_node = steel::k(T[i]);
+        cp = steel::cp(T[i]);
+        rho = steel::rho(T[i]);
+        k = steel::k(T[i]);
 
-        double alpha = k_node / (rho_node * Cp_node);
+        double alpha = k / (rho * cp);
         double r = alpha / (dx * dx);
 
         // Coefficients
         aWT[i] = -r;
         bWT[i] = 2 * r;
         cWT[i] = -r;
-        dWT[i] = Q[i] / (rho_node * Cp_node);
+        dWT[i] = Q[i] / (rho * cp);
     }
 
     T = solveTridiagonal(aWT, bWT, cWT, dWT);
